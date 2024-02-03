@@ -48,7 +48,40 @@ export const signin= async (req,res,next)=>{
         const token=jwt.sign({id:validUser._id},process.env.JWT_SECRET_KEY);
         const {password: pass,...rest}=validUser._doc
         res.status(200).cookie('access_token',token,{
-            httpOnly:true}).json(rest)
+            httpOnly:true,}).json(rest)
+    } catch (error) {
+        next(error)
+    }
+} 
+
+
+export const google= async (req,res,next)=>{
+    const {email,name,googlePhotoURL}=req.body;
+    try {
+        const user= await User.findOne({email})
+        // console.log(user)
+        if(user){
+            const token=jwt.sign({id:user._id},process.env.JWT_SECRET_KEY);
+            const {password: pass,...rest}=user._doc
+            res.status(200).cookie('access_token',token,{
+            httpOnly:true,}).json(rest)
+            // console.log(token)
+        }else{
+            const genratedPassword= Math.random().toString(36).slice(-8)+Math.random().toString(36).slice(-8);
+            const hashedPassword=bcryptjs.hashSync(genratedPassword,10)
+            const newuser=new User({
+                username:name.toLowerCase().split(' ').join()+Math.random().toString(9).slice(-4),
+                email,
+                password:hashedPassword,
+                profilePicture:googlePhotoURL,
+
+            });
+            await newuser.save();
+            const token=jwt.sign({id:newuser._id},process.env.JWT_SECRET_KEY);
+            const {password: pass,...rest}=newuser._doc
+            res.status(200).cookie('access_token',token,{
+            httpOnly:true,}).json(rest)
+        }
     } catch (error) {
         next(error)
     }
