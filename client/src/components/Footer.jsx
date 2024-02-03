@@ -1,7 +1,7 @@
 import React from 'react'
 import { Footer } from 'flowbite-react'
 import { Link} from 'react-router-dom'
-
+import { FaFacebook, FaGithub, FaInstagram, FaTwitter } from "react-icons/fa";
 
 export default function Footerc() {
   return (
@@ -54,8 +54,15 @@ export default function Footerc() {
                 </div>
             </div>
             <Footer.Divider />
-            <div className=''>
+            <div className='w-full sm:flex sm:items-center sm:justify-between'>
                 <Footer.Copyright href='#'  by='Rohit Blog' year={new Date().getFullYear()}/>
+                <div className='flex gap-6 sm:mt-0 mt-4 sm:justify-center'>
+                    <Footer.Icon href='#' icon={FaFacebook} />
+                    <Footer.Icon href='#' icon={FaInstagram} />
+                    <Footer.Icon href='#' icon={FaTwitter} />
+                    <Footer.Icon href='#' icon={FaGithub} />
+
+                </div>
             </div>
         </div>
     </Footer>

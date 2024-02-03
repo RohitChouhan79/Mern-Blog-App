@@ -30,10 +30,9 @@ function SignUp() {
 
       const data= await res.json();
 
-    //   if (data.Success===false) {
-    //     console.log(data.message);
-    //     setErroMessage(data.message)
-    // }
+      if (data.errName) {
+        setErroMessage(data.message)
+    }
     setLoading(false)
 
     if(res.ok){
