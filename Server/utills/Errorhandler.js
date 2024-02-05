@@ -7,3 +7,11 @@ class Errorhandler extends Error{
 }
 
 export default Errorhandler;
+
+
+// export const Errorhandler = (statusCode, message) => {
+//     const error = new Error();
+//     error.statusCode = statusCode;
+//     error.message = message;
+//     return error;
+//   };
