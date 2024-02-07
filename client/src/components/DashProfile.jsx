@@ -85,7 +85,7 @@ export default function DashProfile() {
             {imageFileUplodError && <Alert color='failure' >{imageFileUplodError}</Alert>}
             <TextInput  type='text' id='username ' defaultValue={currentUser.username} placeholder='username'/>
             <TextInput  type='email' id='email' defaultValue={currentUser.email} placeholder='email'/>
-            <TextInput  type='password' id='password '  placeholder='password'/>
+            <TextInput  type='password' id='password'  placeholder='password'/>
             <Button type='submit' gradientDuoTone='purpleToBlue' outline>
                 <span>Update</span>
             </Button>

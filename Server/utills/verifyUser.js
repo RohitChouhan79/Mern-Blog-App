@@ -4,7 +4,9 @@ import Errorhandler from "./Errorhandler.js";
 
 
 export const verifyToken= (req,res,next) =>{
-    const token=req.cookies.access_token;
+
+    const token= req.cookies.access_token;
+    console.log(token);
     if(!token){
         return next(new Errorhandler("Invalid Password",401));
     }

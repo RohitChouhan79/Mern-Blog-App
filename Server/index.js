@@ -42,7 +42,7 @@ app.use((err,req,res,next)=>{
     res.status(statuscode).json({
         message:err.message,
         errName:err.name,
-        // stack:err.stack,
+        stack:err.stack,
     })
 
 
