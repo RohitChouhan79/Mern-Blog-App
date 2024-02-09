@@ -12,6 +12,10 @@ const app=express();
 import { connectDatabase } from "./Models/config.js";
 connectDatabase();
 
+// config cors
+import cors from "cors";
+app.use(cors({ origin: true, credentials: true }));
+
 // logger
  import logger from "morgan"
  app.use(logger("tiny"))

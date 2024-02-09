@@ -1,14 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Label,TextInput,Button,Alert,Spinner } from 'flowbite-react'
 import { useState } from 'react'
 import OAuth from '../components/OAuth'
+import { useDispatch, useSelector } from 'react-redux'
+import { asyncsignup } from '../redux/Action/actions'
 
 
 function SignUp() {
+  const dispatch=useDispatch()
   const [formdata, setformdata] = useState({})
   const [erroMessage, setErroMessage] = useState(null);
   const [loading, setLoading] = useState(false)
+  const {isAuth} = useSelector((state)=> state.user)
   const navigate=useNavigate()
   const handleChange=(e)=>{
     // console.log(e.target.value)
@@ -23,27 +27,16 @@ function SignUp() {
     try {
       setLoading(true)
       setErroMessage(null)
-      const res = await fetch('/api/auth//Signup',{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify(formdata)
-      });
-
-      const data= await res.json();
-
-      if (data.errName) {
-        setErroMessage(data.message)
-    }
-    setLoading(false)
-
-    if(res.ok){
-      navigate('/sign-in')
-    }
+      dispatch(asyncsignup(formdata))
     } catch (error) {
       setErroMessage(error.message)
       setLoading(false)
     }
   }
+  useEffect(() => {
+    console.log('change isuth', isAuth)
+    isAuth && navigate("/sign-in");
+}, [isAuth]);
   return (
     <div className=' min-h-screen mt-20'>
       <div className=' flex gap-6 p-5 max-w-3xl mx-auto flex-col md:flex-row md:items-center'>

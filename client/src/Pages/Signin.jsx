@@ -3,8 +3,9 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Label,TextInput,Button,Alert,Spinner } from 'flowbite-react'
 import { useState } from 'react'
 import {  useDispatch,useSelector } from 'react-redux'
-import { SignInSuccess, SignInFailure,SignInStart } from '../redux/user/userSlice'
+// import {  SignInFailure,SignInStart } from '../redux/user/userSlice'
 import OAuth from '../components/OAuth'
+import { asyncsignin } from '../redux/Action/actions'
 
 
 function SignIn() {
@@ -24,23 +25,7 @@ function SignIn() {
 
     try {
       dispatch(SignInStart())
-      const res = await fetch('/api/auth//Signin',{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify(formdata)
-      });
-
-      const data= await res.json();
-
-      if (data.errName) {
-        return dispatch(SignInFailure(data.message))
-    }
-    
-
-    if(res.ok){
-      dispatch(SignInSuccess(data))
-      navigate('/')
-    }
+      dispatch(asyncsignin(formdata))
     } catch (error) {
       dispatch(SignInFailure(error.message))
     }

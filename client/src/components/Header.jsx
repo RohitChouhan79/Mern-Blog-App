@@ -1,6 +1,6 @@
 import { Avatar, Button, Dropdown, Navbar, TextInput } from 'flowbite-react'
 import React from 'react'
-import { Link, NavLink,useLocation} from 'react-router-dom'
+import { Link, NavLink} from 'react-router-dom'
 import { FaMoon, FaSearch,FaSun} from 'react-icons/fa';
 import {useSelector,useDispatch} from "react-redux"
 import { toggleTheme } from '../redux/theme/themeSlice';

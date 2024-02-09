@@ -5,9 +5,27 @@ import {getDownloadURL, ref,getStorage, uploadBytesResumable} from 'firebase/sto
 import { app } from '../firebase';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function DashProfile() {
+
+    const {isAuth} = useSelector((state)=> state.user)
+    const navigate = useNavigate()
+
+    const isuserLogin = ()=>{
+        !isAuth && navigate('/sign-up')
+    }
+
+    useEffect(() => {
+      isuserLogin()
+    
+      return () => {
+        
+      }
+    }, [isAuth])
+    
+
     const {currentUser}=useSelector(state=>state.user)
     const [imageFile, setImageFile] = useState(null)
     const [imageFileURL, setImageFileURL] = useState(null)

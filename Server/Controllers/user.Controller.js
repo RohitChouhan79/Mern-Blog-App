@@ -1,10 +1,17 @@
 import User from "../Models/user.Model.js";
 import Errorhandler from "../utills/Errorhandler.js";
 import bcryptjs from "bcryptjs"
+import { catchAsyncError } from "./middlewares/catchAsyncError.js";
 
 export const test= (req,res,next)=>{
     res.json({message:"Api Is Working"})
 };
+
+export const currentUser= catchAsyncError(async(req,res,next)=>{
+    const user= await User.findById(req.id).exec();
+    console.log(user);
+    res.json({User:user})
+})
 
 
 export const updateUser= async (req,res,next)=>{

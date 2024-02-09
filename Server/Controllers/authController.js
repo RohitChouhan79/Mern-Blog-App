@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken"
 
 
 export const signup= async (req,res,next)=>{
-
+    // console.log(req.body);
     const {username,email,password}=req.body;
     if(!username || !email||!password||username===''||email===""||password===""){
         next(new Errorhandler("All fields are Required",400))
@@ -21,7 +21,10 @@ export const signup= async (req,res,next)=>{
 
     try {
         await newUser.save();
-        res.json({message:'Signup Succesfull'}) 
+        const token=jwt.sign({id:newUser._id},process.env.JWT_SECRET_KEY);
+        const {password: pass,...rest}=newUser._doc
+        res.status(200).cookie('access_token',token,{
+            httpOnly:true,}).json({message:'Signup Succesfull',rest}) 
     } catch (error) {
         next(error)
     }
