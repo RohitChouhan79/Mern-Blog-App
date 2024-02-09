@@ -8,8 +8,9 @@ export const test= (req,res,next)=>{
 };
 
 export const currentUser= catchAsyncError(async(req,res,next)=>{
-    const user= await User.findById(req.id).exec();
-    console.log(user);
+    // console.log(req.user.id);
+    const user= await User.findById(req.user.id).exec();
+    // console.log(user);
     res.json({User:user})
 })
 

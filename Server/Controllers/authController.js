@@ -24,7 +24,7 @@ export const signup= async (req,res,next)=>{
         const token=jwt.sign({id:newUser._id},process.env.JWT_SECRET_KEY);
         const {password: pass,...rest}=newUser._doc
         res.status(200).cookie('access_token',token,{
-            httpOnly:true,}).json({message:'Signup Succesfull',rest}) 
+            httpOnly:true,}).json({message:'Signup Succesfull',id:newUser._id,sucess:true}) 
     } catch (error) {
         next(error)
     }
