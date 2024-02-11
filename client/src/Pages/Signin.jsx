@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Label,TextInput,Button,Alert,Spinner } from 'flowbite-react'
 import { useState } from 'react'
 import {  useDispatch,useSelector } from 'react-redux'
-// import {  SignInFailure,SignInStart } from '../redux/user/userSlice'
+import {  signinStart,signinFailure } from '../redux/user/userSlice'
 import OAuth from '../components/OAuth'
 import { asyncsignin } from '../redux/Action/actions'
 
@@ -11,6 +11,7 @@ import { asyncsignin } from '../redux/Action/actions'
 function SignIn() {
   const [formdata, setformdata] = useState({})
   const {loading,error:errorMessage}=useSelector(state=>state.user)
+  const {isAuth} = useSelector((state)=> state.user)
   const dispatch=useDispatch()
   const navigate=useNavigate()
   const handleChange=(e)=>{
@@ -20,16 +21,21 @@ function SignIn() {
   const handleSubmit= async (e)=>{
     e.preventDefault();
     if( !formdata.password || !formdata.email){
-      return dispatch(SignInFailure("Please Fill Out all fields."))
+      return dispatch(signinFailure("Please Fill Out all fields."))
     }
 
     try {
-      dispatch(SignInStart())
+      dispatch(signinStart())
       dispatch(asyncsignin(formdata))
     } catch (error) {
-      dispatch(SignInFailure(error.message))
+      dispatch(signinFailure(error.message))
     }
   }
+  useEffect(() => {
+    // console.log('change isuth', isAuth)
+    isAuth && navigate("/");
+}, [isAuth]);
+
   return (
     <div className=' min-h-screen mt-20'>
       <div className=' flex gap-6 p-5 max-w-3xl mx-auto flex-col md:flex-row md:items-center'>

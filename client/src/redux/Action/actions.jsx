@@ -1,5 +1,5 @@
 import axios from '../../config/axios';
-import { SignInUser} from "../user/userSlice"
+import { SignInUser, signinFailure} from "../user/userSlice"
 
 
 export const asyncCurrenUser = () => async (dispatch,getState)=>{
@@ -9,7 +9,7 @@ export const asyncCurrenUser = () => async (dispatch,getState)=>{
             console.log('data', data);
             dispatch(SignInUser(data.User));
         } catch (error) {
-            console.log(error.message, 'errorssssss');
+            signinFailure(error.message)
         }
     }
     
@@ -26,10 +26,25 @@ export const asyncsignup = (user) => async (dispatch, getState) => {
 
 export const asyncsignin = (user) => async (dispatch, getState) => {
     try {
-        await axios.post("/api/auth/Signin", user);
+        const {data}=await axios.post("/api/auth/Signin", user);
         dispatch(asyncCurrenUser())
         
     } catch (error) {
-        console.log(error.response.data);
+        signinFailure(error.message)
     }
 };
+
+export const asyncGooglesignin=(user) => async (dispatch,getState)=>{
+    try {
+        // console.log({name:user.user.displayName},"hiii");
+        await axios.post("/api/auth/google",{
+            name:user.user.displayName,
+            email:user.user.email,
+            googlePhotoURL:user.user.
+            photoURL,
+        });
+        dispatch(asyncCurrenUser())
+    } catch (error) {
+        dispatch(signinFailure(error.message))
+    }
+}

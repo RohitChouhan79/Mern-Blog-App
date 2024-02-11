@@ -28,14 +28,15 @@ function SignUp() {
       setLoading(true)
       setErroMessage(null)
       dispatch(asyncsignup(formdata))
+
     } catch (error) {
       setErroMessage(error.message)
       setLoading(false)
     }
   }
   useEffect(() => {
-    console.log('change isuth', isAuth)
-    isAuth && navigate("/sign-in");
+    // console.log('change isuth', isAuth)
+    isAuth && navigate("/");
 }, [isAuth]);
   return (
     <div className=' min-h-screen mt-20'>
