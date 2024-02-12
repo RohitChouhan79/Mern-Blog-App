@@ -1,5 +1,9 @@
+
 import axios from '../../config/axios';
-import { SignInUser, signinFailure} from "../user/userSlice"
+import { SignInUser, signinFailure, updateFailure, updateUser} from "../user/userSlice"
+
+
+
 
 
 export const asyncCurrenUser = () => async (dispatch,getState)=>{
@@ -47,4 +51,8 @@ export const asyncGooglesignin=(user) => async (dispatch,getState)=>{
     } catch (error) {
         dispatch(signinFailure(error.message))
     }
+}
+
+export const asyncUpdateUSer=(id,user) => async (dispatch,getState)=>{
+    await axios.post(`/api/User/update/${id}`,user)
 }

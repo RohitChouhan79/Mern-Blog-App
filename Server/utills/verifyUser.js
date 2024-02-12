@@ -6,7 +6,7 @@ import Errorhandler from "./Errorhandler.js";
 export const verifyToken= (req,res,next) =>{
 
     const token= req.cookies.access_token;
-    console.log(token, 'check')
+    // console.log(token, 'check')
     if(!token){
         return next(new Errorhandler("Please login in to access the resource",401));
     }
@@ -15,7 +15,7 @@ export const verifyToken= (req,res,next) =>{
             return next(new Errorhandler("Unautherized",401));
         }
         req.user=user
-        console.log('ver')
+        // console.log('ver')
         next();
     });
 };

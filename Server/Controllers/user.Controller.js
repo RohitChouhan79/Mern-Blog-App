@@ -16,6 +16,7 @@ export const currentUser= catchAsyncError(async(req,res,next)=>{
 
 
 export const updateUser= async (req,res,next)=>{
+    console.log(req.body,'update is running', req.params.userID);    
     if(req.user.id !== req.params.userID){
         return next(new Errorhandler("You are not allowed to update this User",403));
     }
@@ -26,8 +27,8 @@ export const updateUser= async (req,res,next)=>{
         req.body.password=bcryptjs.hashSync(req.body.password,10);
     }
     if(req.body.username){
-        if(req.body.username.length < 7 || req.body.username.length > 20){
-            return next (new Errorhandler("Username must be between 7 and 20 Character",400))
+        if(req.body.username.length > 20 ){
+            return next (new Errorhandler("Username must be less then Character",400))
         }
         if(req.body.username.includes(' ')){
             return next (new Errorhandler("Username Cannot contain Spaces",400))
@@ -38,6 +39,7 @@ export const updateUser= async (req,res,next)=>{
         if(!req.body.username.match(/^[a-zA-Z0-9]+$/)){
             return next(new Errorhandler("Username Can only Contains letters and Numbers",400))
         }
+    }
         try {
             const updateUser = await User.findByIdAndUpdate(req.params.userID,{
                 $set:{
@@ -48,9 +50,9 @@ export const updateUser= async (req,res,next)=>{
                 },
             },{new:true});
             const {password, ...rest}=updateUser._doc;
-            req.json(rest)
+            res.json(rest)
         } catch (error) {
+            console(error)
             next(error)
         }
-    }
 };
