@@ -10,7 +10,6 @@ export const asyncCurrenUser = () => async (dispatch,getState)=>{
    
         try {
             const {data}= await axios.post("/api/User/CurrentUser")
-            console.log('data', data);
             dispatch(SignInUser(data.User));
         } catch (error) {
             signinFailure(error.message)

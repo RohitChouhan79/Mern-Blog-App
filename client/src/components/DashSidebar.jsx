@@ -3,9 +3,15 @@ import {  Sidebar} from 'flowbite-react'
 import { FaUser } from "react-icons/fa";
 import { HiArrowSmRight } from "react-icons/hi";
 import { useLocation,Link } from 'react-router-dom';
+import axios from '../config/axios';
+import { useDispatch } from 'react-redux';
+import { signinFailure, signoutStart, signoutUser } from '../redux/user/userSlice';
+
+
 export default function DashSidebar() {
     const location=useLocation();
-  const [tab, setTab] = useState('')
+    const dispatch=useDispatch();
+    const [tab, setTab] = useState('')
   useEffect(()=>{
     const urlParams=new URLSearchParams(location.search)
     const tabFormUrl=urlParams.get('tab'); 
@@ -15,6 +21,20 @@ export default function DashSidebar() {
     } 
 
   },[location.search])
+  const handleSignOut= async (e) =>{
+    try {
+        dispatch(signoutStart())
+        const response = await axios.post(`/api/auth/signout`)
+        const data=response.data
+        if(response.status===200){
+            dispatch(signoutUser(data))
+        }else{
+            dispatch(signinFailure(data.message))
+        }
+    } catch (error) {
+        dispatch(signinFailure(error.message))
+    }
+   }
   return (
     <Sidebar className=' w-full md:w-56'>
         <Sidebar.Items>
@@ -26,7 +46,7 @@ export default function DashSidebar() {
                     </Sidebar.Item>
                 </Link>
 
-                <Sidebar.Item  icon={HiArrowSmRight} className=' cursor-pointer'>
+                <Sidebar.Item   icon={HiArrowSmRight} className=' cursor-pointer' onClick={handleSignOut}>
                     SignOut
                 </Sidebar.Item>
             </Sidebar.ItemGroup>

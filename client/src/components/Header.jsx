@@ -1,14 +1,30 @@
 import { Avatar, Button, Dropdown, Navbar, TextInput } from 'flowbite-react'
 import React from 'react'
+import axios from '../config/axios';
 import { Link, NavLink} from 'react-router-dom'
 import { FaMoon, FaSearch,FaSun} from 'react-icons/fa';
 import {useSelector,useDispatch} from "react-redux"
 import { toggleTheme } from '../redux/theme/themeSlice';
+import { signinFailure, signoutStart, signoutUser } from '../redux/user/userSlice';
 export const Header = () => {
   const {currentUser}=useSelector(state=>state.user)
   const {theme}=useSelector(state=>state.theme)
   const dispatch=useDispatch()
   // const path=useLocation().pathname;
+  const handleSignOut= async (e) =>{
+    try {
+        dispatch(signoutStart())
+        const response = await axios.post(`/api/auth/signout`)
+        const data=response.data
+        if(response.status===200){
+            dispatch(signoutUser(data))
+        }else{
+            dispatch(signinFailure(data.message))
+        }
+    } catch (error) {
+        dispatch(signinFailure(error.message))
+    }
+   }
   return (
     <Navbar className=' border-b-2 rounded-full p-5'>
       <Link to='/' className=' ml-8 self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white'>
@@ -43,7 +59,7 @@ export const Header = () => {
               <Dropdown.Item>Profile</Dropdown.Item>
             </Link>
             <Dropdown.Divider />
-            <Link to="/signout">
+            <Link  onClick={handleSignOut}>
               <Dropdown.Item>Signout</Dropdown.Item>
             </Link>
           </Dropdown>
