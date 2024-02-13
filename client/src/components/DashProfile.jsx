@@ -9,10 +9,11 @@ import { updateFailure, updateStart, updateUser,deleteFailure,deleteStart,delete
 import axios from '../config/axios'
 
 import { FaExclamationTriangle } from "react-icons/fa";
+import { Link } from 'react-router-dom';
 
 export default function DashProfile() {
     const dispatch= useDispatch()
-    const {currentUser,error}=useSelector(state=>state.user)
+    const {currentUser,error,loading,isAuth}=useSelector(state=>state.user)
     const [imageFile, setImageFile] = useState(null)
     const [imageFileURL, setImageFileURL] = useState(null)
     const [imageFileUplodProgress, setImageFileUplodProgress] = useState(null)
@@ -160,9 +161,18 @@ export default function DashProfile() {
             <TextInput  type='text' id='username' defaultValue={currentUser.username} placeholder='username' onChange={handleChange}/>
             <TextInput  type='email' id='email' defaultValue={currentUser.email} placeholder='email' onChange={handleChange} />
             <TextInput  type='password' id='password'  placeholder='password' onChange={handleChange} />
-            <Button type='submit' gradientDuoTone='purpleToBlue' outline>
-                <span>Update</span>
+            <Button type='submit' gradientDuoTone='purpleToBlue' outline disabled={loading || imageFileUploding}>
+                { loading ? 'Loading...' : 'Update'}
             </Button>
+            {
+                isAuth && (
+                    <Link to={'/create-post'}>
+                    <Button type='button' gradientDuoTone='purpleToPink' className='w-full'>
+                        Create A Post
+                    </Button>
+                    </Link>
+                )
+            }
         </form>
         <div className=' text-red-600 flex justify-between mt-5'>
             <span onClick={()=>setShowModel(true)} className=' cursor-pointer'> Delete Account</span>

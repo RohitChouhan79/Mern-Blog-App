@@ -11,6 +11,8 @@ import Footer from './components/Footer'
 import PrivatRoute from './components/PrivatRoute'
 import { useDispatch } from 'react-redux'
 import { asyncCurrenUser } from './redux/Action/actions'
+import IsTruePrivateRoute from './components/IsTruePrivatRoute'
+import CreatePost from './Pages/CreatePost'
 function App() {
     const dispatch = useDispatch();
 
@@ -27,6 +29,9 @@ function App() {
       <Route path='/sign-up' element={<SignUp />} />
       <Route element={<PrivatRoute />}>
         <Route path='/dashboard' element={<Dashboard />} />
+      </Route>
+      <Route element={<IsTruePrivateRoute />}>
+        <Route path='/create-post' element={<CreatePost />} />
       </Route>
       <Route path='/Project' element={<Project />} />
     </Routes>
