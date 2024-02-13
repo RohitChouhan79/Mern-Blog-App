@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import userRoutes from "./Routes/user.Routes.js"
 import authRoutes from "./Routes/auth.Routes.js"
+import postRoutes from './Routes/post.Route.js'
 import cookieParser from "cookie-parser";
 const app=express();
 // app.use(express.json());
@@ -38,6 +39,7 @@ app.use(cookieParser());
 
  app.use('/api/User',userRoutes)
  app.use('/api/auth',authRoutes)
+ app.use('/api/post',postRoutes)
 
 //  error handling
 import Errorhandler from "./utills/Errorhandler.js";
