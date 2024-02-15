@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {  Sidebar} from 'flowbite-react'
 import { FaUser } from "react-icons/fa";
-import { HiArrowSmRight } from "react-icons/hi";
+import { HiArrowSmRight,HiOutlineUserGroup } from "react-icons/hi";
 import { IoDocumentTextSharp } from "react-icons/io5";
 import { useLocation,Link } from 'react-router-dom';
 import axios from '../config/axios';
@@ -52,6 +52,14 @@ export default function DashSidebar() {
                 <Sidebar.Item active={tab==='posts'} icon={IoDocumentTextSharp}   as='div' >
                 
                 <span>Posts</span>
+                </Sidebar.Item>
+            </Link>
+                }
+                {isAuth &&
+                <Link to='/dashboard?tab=users'>
+                <Sidebar.Item active={tab==='users'} icon={HiOutlineUserGroup}   as='div' >
+                
+                <span>Users</span>
                 </Sidebar.Item>
             </Link>
                 }

@@ -10,18 +10,18 @@ export default function DashPost() {
   const {currentUser,isAuth}=useSelector((state)=>state.user);
   const [Showmore, setShowmore] = useState(true)
   // console.log(isAuth);
-  const [UserPost, setUserPost] =useState([])
+  const [users, setUsers] =useState([])
   // console.log(UserPost);
   const [showModel, setShowModel] = useState(false)
-  const [postIdToDelete, setPostIdToDelete] = useState('');
+  const [userIdToDelete, setUserIdToDelete] = useState('');
   useEffect(()=>{
-    const fetchPost=async ()=>{
+    const fetchUser=async ()=>{
       try {
-        const response = await axios.get(`/api/post/getPosts?userId=${currentUser._id}`)
+        const response = await axios.get(`/api/User/getusers`)
         const data=response.data;
         if(response.status===200){
-          setUserPost(data.posts)
-          if(data.posts.length<9){
+          setUsers(data.users)
+          if(data.users.length<9){
             setShowmore(false)
           }
         }
@@ -31,18 +31,18 @@ export default function DashPost() {
     }
 
     if(isAuth){
-      fetchPost();
+      fetchUser();
     } 
 },[currentUser,isAuth])
 
 const handleShowmore=async()=>{
-  const startIndex=UserPost.length;
+  const startIndex=users.length;
   try {
-    const response= await axios.get(`/api/post/getPosts?userId=${currentUser._id}&startIndex=${startIndex}`);
+    const response= await axios.get(`/api/User/getusers?startIndex=${startIndex}`);
     const data=response.data
     if(response.status===200){
-      setUserPost((prev)=>[...prev,...data.posts]);
-      if(data.posts.length<9){
+      setUsers((prev)=>[...prev,...data.users]);
+      if(data.users.length<9){
         setShowmore(false)
       }
     }
@@ -51,61 +51,61 @@ const handleShowmore=async()=>{
   }
 }
 
-const handleDletePost=async()=>{
-  setShowModel(false)
-  try {
-    const response= await axios.post(`/api/post/deletPosts/${postIdToDelete}/${currentUser._id}`)
-    const data=response.data
-    if(response===200){
-      setUserPost(()=>{
-        prev.filter((post)=>post._id !== postIdToDelete)
-      })
+
+const handleDleteuser=async()=>{
+    setShowModel(false)
+    try {
+        const response = await axios.post(`/api/User/delete/${userIdToDelete}`)
+        const data=response.data
+        if(response.status===200){
+            setUsers((prev)=>prev.filter((user)=>user._id !== userIdToDelete));
+            setShowModel(false)
+        }else{
+            console.log(data.message);
+        }
+    } catch (error) {
+        console.log(error.message);
     }
-  } catch (error) {
-    console.log(error.message);
-  }
 }
   return (
     <div className=' table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500'>
-      {isAuth && UserPost.length >0 ?(
+      {isAuth && users.length >0 ?(
       <>
       <Table hoverable className='shadow-md'>
         <Table.Head>
-          <Table.HeadCell>Date Updated</Table.HeadCell>
-          <Table.HeadCell>Post Image</Table.HeadCell>
-          <Table.HeadCell>Post title</Table.HeadCell>
-          <Table.HeadCell>Category</Table.HeadCell>
-          <Table.HeadCell>
-            <span>Edit</span>
-          </Table.HeadCell>
+          <Table.HeadCell>Date created</Table.HeadCell>
+          <Table.HeadCell>User image</Table.HeadCell>
+          <Table.HeadCell>Username</Table.HeadCell>
+          <Table.HeadCell>Admin/user</Table.HeadCell>
+          <Table.HeadCell>Email</Table.HeadCell>
           <Table.HeadCell>
             <span>Delete</span>
           </Table.HeadCell>
         </Table.Head>
-        {UserPost.map((post)=>(
-          <Table.Body key={post._id} className=' divide-y'>
+        {users.map((user)=>(
+          <Table.Body key={user._id} className=' divide-y'>
             <Table.Row>
-              <Table.Cell className=' bg-white dark:border-gray-700 dark:bg-gray-800' >{new Date(post.updatedAt).toLocaleDateString()}</Table.Cell>
+              <Table.Cell className=' bg-white dark:border-gray-700 dark:bg-gray-800' >{new Date(user.createdAt).toLocaleDateString()}</Table.Cell>
               <Table.Cell>
-                <Link className=' font-medium text-gray-900 dark:text-white' to={`post/${post.slug}`}>
-                  <img src={post.image} alt={post.title} className=' w-20 h-10 object-cover bg-gray-500'/>
-                </Link>
+                
+                  <img src={user.profilePicture} alt={user.username} className=' w-10 h-10 object-cover bg-gray-500 rounded-full'/>
+                
               </Table.Cell>
               <Table.Cell>
-                <Link to={`post/${post.slug}`}>
-                  {post.title}
-                </Link>
+                
+                  {user.username}
+                
               </Table.Cell>
-              <Table.Cell>{post.category}</Table.Cell>
               <Table.Cell>
-              <Link className=' text-teal-500 hover:underline font-medium cursor-pointer' to={`/update-post/${post._id}`}>
-            <span>Edit</span>
-            </Link >
+                
+                  {isAuth && isAuth ? "Admin" :"user"}
+                
               </Table.Cell>
+              <Table.Cell>{user.email}</Table.Cell>
               <Table.Cell>
               
             <span className=' text-red-500 hover:underline font-medium cursor-pointer' onClick={()=>{setShowModel(true);
-              setPostIdToDelete(post._id);}}>Delete</span>
+              setUserIdToDelete(user._id);}}>Delete</span>
               </Table.Cell>
 
             </Table.Row>
@@ -133,7 +133,7 @@ const handleDletePost=async()=>{
                         <Button color='gray' onClick={()=>setShowModel(false)}>
                             No,cencel
                         </Button>
-                        <Button color='failure' onClick={handleDletePost}>
+                        <Button color='failure' onClick={handleDleteuser}>
                             Yes I am Sure
                         </Button>
                     </div>
