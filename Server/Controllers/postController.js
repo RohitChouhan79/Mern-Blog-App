@@ -66,3 +66,36 @@ export const getPosts =async (req,res,next)=>{
         console.log(error);
     }
 }
+
+
+
+export const deletePosts =async (req,res,next)=>{
+    if(req.user.id !==req.params.userId){
+        return next(Errorhandler("You are not allowed to delete this post"))
+    }
+    try {
+        await Post.findByIdAndDelete(req.params.postId);
+        res.status(200).json('This Post has been deleted ')
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const updatePosts =async (req,res,next)=>{
+    if(req.user.id !==req.params.userId){
+        return next(Errorhandler("You are not allowed to Update this post"))
+    }
+    try {
+        const updatePost=await Post.findByIdAndUpdate(req.params.postId,{
+            $set:{
+                title:req.body.title,
+                content:req.body.content,
+                category:req.body.category,
+                image:req.body.image,
+            }
+        },{new:true})
+        res.status(200).json(updatePost)
+    } catch (error) {
+        next(error)
+    }
+}

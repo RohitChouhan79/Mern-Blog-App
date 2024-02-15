@@ -13,6 +13,7 @@ import { useDispatch } from 'react-redux'
 import { asyncCurrenUser } from './redux/Action/actions'
 import IsTruePrivateRoute from './components/IsTruePrivatRoute'
 import CreatePost from './Pages/CreatePost'
+import UpdatePost from './Pages/UpdatePost'
 function App() {
     const dispatch = useDispatch();
 
@@ -32,6 +33,7 @@ function App() {
       </Route>
       <Route element={<IsTruePrivateRoute />}>
         <Route path='/create-post' element={<CreatePost />} />
+        <Route path='/update-post/:postId' element={<UpdatePost />}/>
       </Route>
       <Route path='/Project' element={<Project />} />
     </Routes>

@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import axios from '../config/axios'
-import { Table } from 'flowbite-react';
+import { Button, Modal, Table } from 'flowbite-react';
 import { Link } from 'react-router-dom';
+import { FaExclamationTriangle } from 'react-icons/fa';
 
 
 export default function DashPost() {
   const {currentUser,isAuth}=useSelector((state)=>state.user);
   const [Showmore, setShowmore] = useState(true)
-  console.log(isAuth);
+  // console.log(isAuth);
   const [UserPost, setUserPost] =useState([])
-  console.log(UserPost);
+  // console.log(UserPost);
+  const [showModel, setShowModel] = useState(false)
+  const [postIdToDelete, setPostIdToDelete] = useState('');
   useEffect(()=>{
     const fetchPost=async ()=>{
       try {
@@ -42,6 +45,21 @@ const handleShowmore=async()=>{
       if(data.posts.length<9){
         setShowmore(false)
       }
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+const handleDletePost=async()=>{
+  setShowModel(false)
+  try {
+    const response= await axios.post(`/api/post/deletPosts/${postIdToDelete}/${currentUser._id}`)
+    const data=response.data
+    if(response===200){
+      setUserPost(()=>{
+        prev.filter((post)=>post._id !== postIdToDelete)
+      })
     }
   } catch (error) {
     console.log(error.message);
@@ -80,14 +98,14 @@ const handleShowmore=async()=>{
               </Table.Cell>
               <Table.Cell>{post.category}</Table.Cell>
               <Table.Cell>
-              <Link className=' text-teal-500 hover:underline font-medium cursor-pointer' to={`/delete-post/${post._id}`}>
+              <Link className=' text-teal-500 hover:underline font-medium cursor-pointer' to={`/update-post/${post._id}`}>
             <span>Edit</span>
             </Link >
               </Table.Cell>
               <Table.Cell>
-              <Link className=' text-red-500 hover:underline font-medium cursor-pointer' to={`/update-post/${post._id}`}>
-            <span>Delete</span>
-            </Link >
+              
+            <span className=' text-red-500 hover:underline font-medium cursor-pointer' onClick={()=>{setShowModel(true);
+              setPostIdToDelete(post._id);}}>Delete</span>
               </Table.Cell>
 
             </Table.Row>
@@ -105,6 +123,23 @@ const handleShowmore=async()=>{
       </>):(
         <p>You Have No Post yet</p>
       )}
+      <Modal show={showModel} onClose={()=>setShowModel(false)} size='md' popup >
+            <Modal.Header />
+            <Modal.Body>
+                <div className="text-center">
+                    <FaExclamationTriangle className=' h-14 w-14 text-red-600 dark:text-red-500 mb-4 mx-auto'/>
+                    <h3 className=' mb-5 text-lg text-black dark:text-gray-600'>Are you Sure You Want to delete Post?</h3>
+                    <div className=' flex justify-center gap-5'>
+                        <Button color='gray' onClick={()=>setShowModel(false)}>
+                            No,cencel
+                        </Button>
+                        <Button color='failure' onClick={handleDletePost}>
+                            Yes I am Sure
+                        </Button>
+                    </div>
+                </div>
+            </Modal.Body>
+        </Modal>
     </div>
   )
 }

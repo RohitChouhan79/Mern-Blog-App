@@ -16,7 +16,7 @@ export const currentUser= catchAsyncError(async(req,res,next)=>{
 
 
 export const updateUser= async (req,res,next)=>{
-    console.log(req.body,'update is running', req.params.userID);    
+    // console.log(req.body,'update is running', req.params.userID);    
     if(req.user.id !== req.params.userID){
         return next(new Errorhandler("You are not allowed to update this User",403));
     }

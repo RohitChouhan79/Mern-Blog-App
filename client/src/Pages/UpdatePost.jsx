@@ -7,16 +7,38 @@ import { app } from '../firebase';
 import axios from '../config/axios'
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 
 
-export default function CreatePost() {
+export default function UpdatePost() {
+  const {currentUser,isAuth}=useSelector((state)=>state.user);
     const [file, setFile] = useState(null)
     const [imageuploadError, setImageuploadError] = useState(null)
     const [imageuploadProgress, setImageuploadProgress] = useState(null)
     const [formData, setformData] = useState({})
     const [publishError, setpublishError] = useState(null)
+    const {postId}=useParams()
+
+    useEffect(async()=>{
+        try {
+            const response=await axios(`/api/post/getPosts?postId=${postId}`)
+        const data=response.data;
+        if(response.status===200){
+            setpublishError(null)
+            setformData(data.posts[0])
+        }
+        if(response.status!==200){
+            console.log(data.message);
+            setpublishError(data.message)
+        }
+        } catch (error) {
+            console.log(error.message);
+            setpublishError(error.message)
+        }
+    },[postId])
+
 
     const navigate=useNavigate();
 
@@ -58,10 +80,10 @@ export default function CreatePost() {
     const handleSubmit =async (e)=>{
         e.preventDefault();
         try {
-            const response = await axios.post(`/api/post/create`,formData)
+            const response = await axios.post(`/api/post/updatePosts/${formData._id}/${currentUser._id}`,formData)
             console.log("abc");
             const data=response.data;
-            if(response.status===201){
+            if(response.status===200){
                 setpublishError(null)
                 navigate(`/post/${data.slug}`)
             }else{
@@ -74,11 +96,11 @@ export default function CreatePost() {
     }
   return (
     <div className='p-3 max-w-3xl mx-auto min-h-screen'>
-        <h1 className=' text-center text-3xl my-7 font-semibold'>Create Your Post Now</h1>
+        <h1 className=' text-center text-3xl my-7 font-semibold'>Update Your Post Now</h1>
         <form className=' flex flex-col gap-5' onSubmit={handleSubmit}>
             <div className=' flex flex-col gap-5 sm:flex-row justify-center'>
-                <TextInput type='text' placeholder='Title' required id='title' className='flex-1 ' onChange={(e)=>setformData({...formData,title:e.target.value})} />
-                <Select onChange={(e)=>setformData({...formData,category:e.target.value})}>
+                <TextInput type='text' placeholder='Title' required id='title' value={formData.title} className='flex-1 ' onChange={(e)=>setformData({...formData,title:e.target.value})} />
+                <Select value={formData.category} onChange={(e)=>setformData({...formData,category:e.target.value})}>
                     <option value='unCategorized'>Select a Category </option>
                     <option value='react-js'>ReactJS</option>
                     <option value='Node-js'>NodeJS</option>
@@ -103,8 +125,8 @@ export default function CreatePost() {
             {formData.image && (
                     <img src={formData.image} alt='Upload' className='w-full h-72 object-cover'/>
                 )}
-            <ReactQuill theme="snow"placeholder='Write Somthing .......' className=' h-60 mb-14' onChange={(value)=>setformData({...formData,content:value})}/>
-            <Button type='submit' gradientDuoTone='purpleToPink'>Publish Your Blog</Button>
+            <ReactQuill value={formData.content} theme="snow"placeholder='Write Somthing .......' className=' h-60 mb-14' onChange={(value)=>setformData({...formData,content:value})}/>
+            <Button type='submit' gradientDuoTone='purpleToPink'>Update Your Blog</Button>
             {publishError && (
           <Alert className='mt-5' color='failure'>
             {publishError}
