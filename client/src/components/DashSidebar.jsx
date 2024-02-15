@@ -2,15 +2,17 @@ import React, { useEffect, useState } from 'react'
 import {  Sidebar} from 'flowbite-react'
 import { FaUser } from "react-icons/fa";
 import { HiArrowSmRight } from "react-icons/hi";
+import { IoDocumentTextSharp } from "react-icons/io5";
 import { useLocation,Link } from 'react-router-dom';
 import axios from '../config/axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { signinFailure, signoutStart, signoutUser } from '../redux/user/userSlice';
 
 
 export default function DashSidebar() {
     const location=useLocation();
     const dispatch=useDispatch();
+    const {isAuth}=useSelector(state=>state.user)
     const [tab, setTab] = useState('')
   useEffect(()=>{
     const urlParams=new URLSearchParams(location.search)
@@ -38,13 +40,22 @@ export default function DashSidebar() {
   return (
     <Sidebar className=' w-full md:w-56'>
         <Sidebar.Items>
-        <Sidebar.ItemGroup>
+        <Sidebar.ItemGroup className=' flex flex-col gap-2'>
                 <Link to='/dashboard?tab=profile'>
-                    <Sidebar.Item active={tab==='profile'} icon={FaUser} label={"User"} labelColor='dark' as='div' >
+                    <Sidebar.Item active={tab==='profile'} icon={FaUser} label={isAuth ? "Admin" :"user"} labelColor='dark' as='div' >
                     
                     <span>Profile</span>
                     </Sidebar.Item>
                 </Link>
+                {isAuth &&
+                <Link to='/dashboard?tab=posts'>
+                <Sidebar.Item active={tab==='posts'} icon={IoDocumentTextSharp}   as='div' >
+                
+                <span>Posts</span>
+                </Sidebar.Item>
+            </Link>
+                }
+                
 
                 <Sidebar.Item   icon={HiArrowSmRight} className=' cursor-pointer' onClick={handleSignOut}>
                     SignOut
@@ -55,10 +66,3 @@ export default function DashSidebar() {
   )
 }
 
-
-{/* <Sidebar.Item active icon={<FaUser />} label={'User'} labelColor='dark'>
-                    Profile
-                </Sidebar.Item>
-                <Sidebar.Item active icon={< />} >
-                    SignOut
-                </Sidebar.Item> */}
