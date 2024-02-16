@@ -87,12 +87,12 @@ const handleDletePost=async()=>{
             <Table.Row>
               <Table.Cell className=' bg-white dark:border-gray-700 dark:bg-gray-800' >{new Date(post.updatedAt).toLocaleDateString()}</Table.Cell>
               <Table.Cell>
-                <Link className=' font-medium text-gray-900 dark:text-white' to={`post/${post.slug}`}>
+                <Link className=' font-medium text-gray-900 dark:text-white' to={`/post/${post.slug}`}>
                   <img src={post.image} alt={post.title} className=' w-20 h-10 object-cover bg-gray-500'/>
                 </Link>
               </Table.Cell>
               <Table.Cell>
-                <Link to={`post/${post.slug}`}>
+                <Link to={`/post/${post.slug}`}>
                   {post.title}
                 </Link>
               </Table.Cell>
