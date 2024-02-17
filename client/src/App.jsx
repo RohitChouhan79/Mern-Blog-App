@@ -15,6 +15,7 @@ import IsTruePrivateRoute from './components/IsTruePrivatRoute'
 import CreatePost from './Pages/CreatePost'
 import UpdatePost from './Pages/UpdatePost'
 import PostPage from './Pages/PostPage'
+import ScrollToTop from './Pages/ScrollToTop'
 function App() {
     const dispatch = useDispatch();
 
@@ -23,6 +24,7 @@ function App() {
     }, []);
   return (
     <BrowserRouter>
+    <ScrollToTop />
     <Header />
     <Routes>
       <Route path='/' element={<Home />} />

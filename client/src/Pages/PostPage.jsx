@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { Button, Spinner } from 'flowbite-react';
 import CallToAction from '../components/CallToAction';
+import Commentsection from '../components/Commentsection';
 export default function PostPage() {
     const {postslug}=useParams()
     const [loading, setLoading] = useState(true)
@@ -66,5 +67,6 @@ export default function PostPage() {
       <div className='max-w-4xl mx-auto w-full'>
         <CallToAction />
       </div>
+      <Commentsection postId={post._id} />
   </main>
 }
