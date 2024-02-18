@@ -158,7 +158,7 @@ export default function Commentsection({postId}) {
                         <Button color='gray' onClick={()=>setShowModel(false)}>
                             No,cencel
                         </Button>
-                        <Button color='failure' onClick={()=>handleDelete(setCommentDelete)}>
+                        <Button color='failure' onClick={()=>handleDelete(commentDelete)}>
                             Yes I am Sure
                         </Button>
                     </div>
