@@ -6,6 +6,7 @@ import authRoutes from "./Routes/auth.Routes.js"
 import postRoutes from './Routes/post.Route.js'
 import commentRoutes from "./Routes/comment.Routes.js"
 import cookieParser from "cookie-parser";
+import path from 'path';
 const app=express();
 // app.use(express.json());
 
@@ -13,6 +14,8 @@ const app=express();
 
 import { connectDatabase } from "./Models/config.js";
 connectDatabase();
+
+const __dirname = path.resolve();
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -49,6 +52,10 @@ import Errorhandler from "./utills/Errorhandler.js";
 app.all("*",(req,res,next)=>{
     next(new Errorhandler(`Requested URL not Found ${req.url}`,404))
 })
+
+app.use(express.static(path.join(__dirname, '/client/dist')));
+
+
 app.use((err,req,res,next)=>{
     const statuscode=err.statuscode ||500;
     if(err.name==="MongoServerError" && err.message.includes("E11000 duplicate key")){

@@ -18,20 +18,26 @@ export default function Home() {
   }, []);
   return (
     <div>
-      <div className='flex flex-col gap-6 p-28 px-3 max-w-6xl mx-auto '>
-        <h1 className='text-3xl font-bold lg:text-6xl'>Welcome to my Blog</h1>
-        <p className='text-gray-500 text-xs sm:text-sm'>
-          Here you'll find a variety of articles and tutorials on topics such as
-          web development, software engineering, and programming languages.
+      <div className='flex flex-col h-2/3 gap-6 p-28 px-3 max-w-6xl mx-auto '>
+        <h1 className=' text-5xl font-bold lg:text-8xl mb-5'>This is <span className=' text-red-500'>coding.blog</span></h1>
+        <p className='text-gray-500 lg:text-xl sm:text-sm mb-2'>
+        A platform for developers, that provides you with a personalised curation service on programming topics. <br /> Use it to write and read quality articles on programming. <br /> Not for content-marketing disguised as programming tutorials. <br /> Not for advertisement blended with sincerely interesting pieces. Quality. Articles. About. Coding.
         </p>
         <Link
           to='/search'
-          className='text-xs sm:text-sm text-teal-500 font-bold hover:underline'
+          className='text-xs sm:text-sm text-black font-bold hover:underline'
         >
-          View all posts
+          <button className=' bg-red-500 p-5 border rounded-xl border-teal-500 '>View all posts</button>
         </Link>
       </div>
-      <div className='p-3 bg-amber-100 dark:bg-slate-700'>
+      <div className='flex flex-col h-2/3 gap-6 p-28 px-3 max-w-6xl mx-auto' >
+        <h1 className='text-black dark:text-white lg:text-xl sm:text-sm mb-2'>Today.......</h1>
+        <p className='text-gray-500 lg:text-xl sm:text-sm mb-2'>Today ...
+Today, it feels like most articles are trying to sell you something. They are, as they cannot reach you for free. Curators like Medium need to put work into ensuring you get the articles you would enjoy. To compensate, they either put the content behind paywalls or shift the costs to the authors. They also curate with only the content available on their platform.
+
+However, there is a tonne of content out there. The problem is finding truly insightful pieces based on your personal needs is time-consuming.</p>
+      </div>
+      <div className='p-3 '>
         <CallToAction />
       </div>
 

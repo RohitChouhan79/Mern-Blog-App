@@ -6,6 +6,7 @@ import { FaMoon, FaSearch,FaSun} from 'react-icons/fa';
 import {useSelector,useDispatch} from "react-redux"
 import { toggleTheme } from '../redux/theme/themeSlice';
 import { signinFailure, signoutStart, signoutUser } from '../redux/user/userSlice';
+import { FaCampground } from "react-icons/fa";
 export const Header = () => {
   const location = useLocation();
   const {currentUser}=useSelector(state=>state.user)
@@ -44,9 +45,11 @@ export const Header = () => {
     navigate(`/search?${searchQuery}`);
    }
   return (
-    <Navbar className=' border-b-2 rounded-full p-5'>
-      <Link to='/' className=' ml-8 self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white'>
-        <span className=' px-2 py-1 bg-gradient-to-r from-pink-500 via-indigo-500 to-purple-500 rounded-xl text-white'>Rsc</span>
+    <>
+    <Navbar className=' border-b-2 lg:rounded-b-full border-red-500 dark:border-red-400 p-6 sm:rounded-b-md'>
+      <Link to='/' className=' ml-8 flex self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white'>
+        <FaCampground className=' font-serif font-bold text-center '/>
+        <span className=' font-serif tracking-wide font-bold text-xl pl-4'>Rsc</span>
         Blog's
       </Link>
       <form onSubmit={handleSubmit} >
@@ -63,6 +66,7 @@ export const Header = () => {
         {currentUser ? (
           <Dropdown arrowIcon={false} inline label={
             <Avatar 
+            className=' mr-8'
             alt='user'
             img={currentUser.profilePicture}
             rounded
@@ -83,26 +87,27 @@ export const Header = () => {
           </Dropdown>
         ):(
           <Link to="/sign-in">
-          <Button   gradientDuoTone="purpleToBlue" outline >Sign In</Button>
+          <Button className=' mr-8'  gradientDuoTone="purpleToBlue" outline >Sign In</Button>
           </Link>
         )}
         
         <Navbar.Toggle/>
       </div>
-      <Navbar.Collapse>
+      <Navbar.Collapse className=''>
           <NavLink to="/" style={({ isActive }) => {
- return isActive ? { color: "#3F7CE2" } : {};
+ return isActive ? { color: "red" } : {};
  }}
   >Home</NavLink>
           <NavLink to="/about" style={({ isActive }) => {
- return isActive ? { color: "#3F7CE2" } : {};
+ return isActive ? { color: "red" } : {};
  }}
  >About</NavLink>
           <NavLink to="/Project"   style={({ isActive }) => {
- return isActive ? { color: "#3F7CE2" } : {};
+ return isActive ? { color: "red" } : {};
  }}
  >Projects</NavLink>
         </Navbar.Collapse>
     </Navbar>
+    </>
   )
 }

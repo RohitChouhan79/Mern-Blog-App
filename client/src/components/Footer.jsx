@@ -1,19 +1,26 @@
 import React from 'react'
 import { Footer } from 'flowbite-react'
 import { Link} from 'react-router-dom'
-import { FaFacebook, FaGithub, FaInstagram, FaTwitter } from "react-icons/fa";
+import { FaCampground, FaFacebook, FaGithub, FaInstagram, FaTwitter } from "react-icons/fa";
 
 export default function Footerc() {
   return (
-    <Footer container className=' border border-t-4 border-teal-600'>
+    <Footer container className=' border border-t-4 rounded-t-3xl    border-red-600'>
         <div className=' w-full max-w-7xl mx-auto'>
-            <div className=' grid w-full justify-between sm:flex md:grid-cols-1'>
-                <div className=' mt-5'>
-                    <Link to='/' className=' self-center whitespace-nowrap text-lg sm:text-xl font-semibold dark:text-white'>
-                        <span className=' px-2 py-1 bg-gradient-to-r from-pink-500 via-indigo-500 to-purple-500 rounded-xl text-white'>Rsc</span>
-                        Blog's
-                    </Link>
+            
+            
+            <div className='w-full sm:flex sm:items-center sm:justify-between'>
+                <Footer.Copyright href='#'  by='Rohit Blog' year={new Date().getFullYear()}/>
+                <div className='flex gap-6 sm:mt-0 mt-4 sm:justify-center'>
+                    <Footer.Icon href='#' icon={FaFacebook} />
+                    <Footer.Icon href='#' icon={FaInstagram} />
+                    <Footer.Icon href='#' icon={FaTwitter} />
+                    <Footer.Icon href='#' icon={FaGithub} />
+
                 </div>
+            </div>
+            <Footer.Divider />
+            <div className=' grid w-full justify-between sm:flex md:grid-cols-1'>
                 <div className='grid grid-cols-2 gap-8 mt-4 sm:grid-cols-3 sm:gap-6'>
                     <div>
                         <Footer.Title title='About' />
@@ -52,16 +59,12 @@ export default function Footerc() {
 
                     </div>
                 </div>
-            </div>
-            <Footer.Divider />
-            <div className='w-full sm:flex sm:items-center sm:justify-between'>
-                <Footer.Copyright href='#'  by='Rohit Blog' year={new Date().getFullYear()}/>
-                <div className='flex gap-6 sm:mt-0 mt-4 sm:justify-center'>
-                    <Footer.Icon href='#' icon={FaFacebook} />
-                    <Footer.Icon href='#' icon={FaInstagram} />
-                    <Footer.Icon href='#' icon={FaTwitter} />
-                    <Footer.Icon href='#' icon={FaGithub} />
-
+                <div className=' mt-5'>
+                <Link to='/' className=' ml-8 flex self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white'>
+                    <FaCampground className=' font-serif font-bold text-center '/>
+                    <span className=' font-serif tracking-wide font-bold text-xl pl-4'>Rsc</span>
+                    Blog's
+                </Link>
                 </div>
             </div>
         </div>

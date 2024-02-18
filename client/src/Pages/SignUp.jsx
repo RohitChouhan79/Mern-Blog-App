@@ -5,6 +5,7 @@ import { useState } from 'react'
 import OAuth from '../components/OAuth'
 import { useDispatch, useSelector } from 'react-redux'
 import { asyncsignup } from '../redux/Action/actions'
+import { FaCampground } from 'react-icons/fa'
 
 
 function SignUp() {
@@ -39,13 +40,14 @@ function SignUp() {
     isAuth && navigate("/");
 }, [isAuth]);
   return (
-    <div className=' min-h-screen mt-20'>
-      <div className=' flex gap-6 p-5 max-w-3xl mx-auto flex-col md:flex-row md:items-center'>
+    <div className=' min-h-screen '>
+      <div className=' flex gap-8 pt-44 max-w-3xl mx-auto flex-col md:flex-row md:items-center'>
         {/* left */}
         <div className=' flex-1'>
-        <Link to='/' className='  text-4xl  font-bold dark:text-white'>
-        <span className=' px-2 py-1 bg-gradient-to-r from-pink-500 via-indigo-500 to-purple-500 rounded-xl text-white'>Rsc</span>
-        Blog's
+        <Link to='/' className='ml-2 flex self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white'>
+        <FaCampground className=' font-serif font-bold text-center text-5xl'/>
+        <span className=' font-serif tracking-wide font-bold text-5xl pl-4'>Rsc</span>
+        <span className=' text-6xl'>Blog's</span>
       </Link>
       <p className=' text-sm mt-6 mb-2'>
         You can Signup With your email and Password <br />Or With Google
