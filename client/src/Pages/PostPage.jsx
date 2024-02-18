@@ -4,11 +4,13 @@ import { Link, useParams } from 'react-router-dom'
 import { Button, Spinner } from 'flowbite-react';
 import CallToAction from '../components/CallToAction';
 import Commentsection from '../components/Commentsection';
+import PostCard from '../components/PostCard';
 export default function PostPage() {
     const {postslug}=useParams()
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
     const [post, setPost] = useState(null)
+    const [recentPost, setRecentPost] = useState(null)
     // console.log(post);
     useEffect(()=>{
         const fetchPost= async()=>{
@@ -31,6 +33,22 @@ export default function PostPage() {
         }
         fetchPost()
     },[postslug])
+
+
+    useEffect(()=>{
+      try {
+        const fetchrecentPost = async () =>{
+          const response= await axios.get(`/api/post/getPosts?limit=3`);
+          const data=await response.data
+          if(data){
+            setRecentPost(data.posts  )
+          }
+        }
+        fetchrecentPost()
+      } catch (error) {
+        console.log(error.message);
+      }
+    })
 
     // useEffect(() => {
     //     console.log('heloo from',post);
@@ -68,5 +86,14 @@ export default function PostPage() {
         <CallToAction />
       </div>
       <Commentsection postId={post._id} />
+      <div className='flex flex-col justify-center items-center mb-5'>
+        <h1 className='text-xl mt-5'>Recent Articales</h1>
+        <div className='flex flex-wrap gap-5 mt-5 justify-center'>
+          {
+            recentPost && recentPost.map((post)=>(
+              <PostCard key={post.id} post={post} />          ))
+          }
+        </div>
+      </div>
   </main>
 }

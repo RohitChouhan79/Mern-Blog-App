@@ -16,6 +16,7 @@ import CreatePost from './Pages/CreatePost'
 import UpdatePost from './Pages/UpdatePost'
 import PostPage from './Pages/PostPage'
 import ScrollToTop from './Pages/ScrollToTop'
+import Search from './Pages/Search'
 function App() {
     const dispatch = useDispatch();
 
@@ -31,6 +32,7 @@ function App() {
       <Route path='/sign-in' element={<Signin />} />
       <Route path='/about' element={<About />} />
       <Route path='/sign-up' element={<SignUp />} />
+      <Route path='/search' element={<Search />} />
       <Route element={<PrivatRoute />}>
         <Route path='/dashboard' element={<Dashboard />} />
       </Route>

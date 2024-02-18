@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {  Sidebar} from 'flowbite-react'
 import { FaUser } from "react-icons/fa";
-import { HiArrowSmRight,HiOutlineUserGroup } from "react-icons/hi";
+import { HiAnnotation, HiArrowSmRight,HiChartPie,HiOutlineUserGroup } from "react-icons/hi";
 import { IoDocumentTextSharp } from "react-icons/io5";
 import { useLocation,Link } from 'react-router-dom';
 import axios from '../config/axios';
@@ -48,6 +48,16 @@ export default function DashSidebar() {
                     </Sidebar.Item>
                 </Link>
                 {isAuth &&
+                <Link to='/dashboard?tab=dash'>
+                <Sidebar.Item
+                active={tab === 'dash' || !tab}
+                icon={HiChartPie}
+                as='div'
+              >
+                Dashboard
+              </Sidebar.Item>
+            </Link>}
+                {isAuth &&
                 <Link to='/dashboard?tab=posts'>
                 <Sidebar.Item active={tab==='posts'} icon={IoDocumentTextSharp}   as='div' >
                 
@@ -63,6 +73,15 @@ export default function DashSidebar() {
                 </Sidebar.Item>
             </Link>
                 }
+                <Link to='/dashboard?tab=comments'>
+                <Sidebar.Item
+                  active={tab === 'comments'}
+                  icon={HiAnnotation}
+                  as='div'
+                >
+                  Comments
+                </Sidebar.Item>
+              </Link>
                 
 
                 <Sidebar.Item   icon={HiArrowSmRight} className=' cursor-pointer' onClick={handleSignOut}>
