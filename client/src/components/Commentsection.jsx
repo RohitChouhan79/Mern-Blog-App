@@ -1,15 +1,19 @@
-import { Alert, Button, Textarea } from 'flowbite-react'
+import { Alert, Button, Modal, Textarea } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
 import {useSelector} from 'react-redux'
 import axios from '../config/axios'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Comment from "./Comment"
+import { FaExclamationCircle } from 'react-icons/fa'
 
 export default function Commentsection({postId}) {
     const {currentUser}=useSelector(state=>state.user)
     const [comment,setComment]=useState('');
     const [comments,setComments]=useState([]);
     const [commentError, setCommentError] = useState(null)
+    const [showModel, setShowModel] = useState(false)
+    const [commentDelete, setCommentDelete] = useState(null)
+    const navigate=useNavigate;
     // console.log(comments);
     const handleSunmit =async (e)=>{
         e.preventDefault();
@@ -28,7 +32,47 @@ export default function Commentsection({postId}) {
         setCommentError(error.message)
        }
     }
+    const handleLikes= async(commentId)=>{
+        if(!currentUser){
+            return;
+        }
+        try {
+            const response= await axios.post(`/api/comment/likeComment/${commentId}`)
+            const data = await response.data
+            if(data){
+                setComments(comment.map((comment)=>
+                    comment._id===commentId ? {
+                        ...comment,likes:data.likes , numberOfLikes:data.likes.length,
+                    }:comment
+                ))
+            }
+        } catch (error) {
+            
+        }
+    }
 
+    const handleEdit=async(comment,editedContent)=>{
+        setComments(
+            comments.map((c)=>c._id===comment._id ?{...c,content:editedContent}:c
+        ))
+    }
+
+    const handleDelete=async (commentId)=>{
+        setShowModel(false)
+        if(!currentUser){
+            navigate(`/sign-in`)
+            return;
+        }
+        try {
+            const response= await axios.post(`/api/comment/DeleteComment/${commentId}`)
+            const data=response.data
+            if(data){
+                setComments(comments.filter((comment)=>comment._id !==commentId))
+            }
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
     useEffect(()=>{
         const getComments = async () =>{
             try {
@@ -93,12 +137,34 @@ export default function Commentsection({postId}) {
             <Comment
               key={comment._id}
               comment={comment}
+              onLike={handleLikes}
+              onEdit={handleEdit}
+              onDelete={(commentId)=>{
+                setShowModel(true) 
+                setCommentDelete(commentId)
+            }}
             />
           ))}
             </>
             
         )}
-        
+        <Modal show={showModel} onClose={()=>setShowModel(false)} size='md' popup >
+            <Modal.Header />
+            <Modal.Body>
+                <div className="text-center">
+                    <FaExclamationCircle className=' h-14 w-14 text-red-600 dark:text-red-500 mb-4 mx-auto'/>
+                    <h3 className=' mb-5 text-lg text-black dark:text-gray-600'>Are you Sure You Want to delete Comment?</h3>
+                    <div className=' flex justify-center gap-5'>
+                        <Button color='gray' onClick={()=>setShowModel(false)}>
+                            No,cencel
+                        </Button>
+                        <Button color='failure' onClick={()=>handleDelete(setCommentDelete)}>
+                            Yes I am Sure
+                        </Button>
+                    </div>
+                </div>
+            </Modal.Body>
+        </Modal>
     </div>
   )
 }
