@@ -15,7 +15,6 @@ const app=express();
 import { connectDatabase } from "./Models/config.js";
 connectDatabase();
 
-const __dirname = path.resolve();
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -41,6 +40,7 @@ app.use(cookieParser());
 
 //  Routes
 
+app.use('/',(req, res, next)=>{res.json({message:'connected'})})
  app.use('/api/User',userRoutes)
  app.use('/api/auth',authRoutes)
  app.use('/api/post',postRoutes)
@@ -53,7 +53,6 @@ app.all("*",(req,res,next)=>{
     next(new Errorhandler(`Requested URL not Found ${req.url}`,404))
 })
 
-app.use(express.static(path.join(__dirname, '/client/dist')));
 
 
 app.use((err,req,res,next)=>{
