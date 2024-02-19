@@ -27,3 +27,4 @@ package.json
 node_modules
 .env
 */.env
+client/.gitignore
