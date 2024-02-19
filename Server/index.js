@@ -15,6 +15,8 @@ const app=express();
 import { connectDatabase } from "./Models/config.js";
 connectDatabase();
 
+const __dirname = path.resolve();
+
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -40,12 +42,15 @@ app.use(cookieParser());
 
 //  Routes
 
-app.use('/',(req, res, next)=>{res.json({message:'connected'})})
+// app.use('/',(req, res, next)=>{res.json({message:'connected'})})
  app.use('/api/User',userRoutes)
  app.use('/api/auth',authRoutes)
  app.use('/api/post',postRoutes)
  app.use('/api/comment',commentRoutes)
 
+
+ app.use(express.static(path.join(__dirname, '/client/dist')));
+ 
 //  error handling
 import Errorhandler from "./utills/Errorhandler.js";
 
