@@ -15,6 +15,7 @@ const app=express();
 import { connectDatabase } from "./Models/config.js";
 connectDatabase();
 
+// // deploy code
 const __dirname = path.resolve();
 
 
@@ -27,7 +28,6 @@ app.use(function(req, res, next) {
 // config cors
 import cors from "cors";
 app.use(cors({ origin: true, credentials: true }));
-// app.use(cors({ origin: 'http://localhost:3000' , credentials :  true,  methods: 'GET,PUT,POST,OPTIONS', allowedHeaders: 'Content-Type,Authorization' }))
 
 // logger
  import logger from "morgan"
@@ -49,7 +49,6 @@ app.use(cookieParser());
  app.use('/api/comment',commentRoutes)
 
 
- app.use(express.static(path.join(__dirname, '/client/dist')));
  
 //  error handling
 import Errorhandler from "./utills/Errorhandler.js";

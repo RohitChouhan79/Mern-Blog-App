@@ -6,3 +6,6 @@ const instance = axios.create({
 });
 
 export default instance;
+
+// https://mern-blog-server-git-master-rohitchouhan79s-projects.vercel.app/
+// http://localhost:3000/

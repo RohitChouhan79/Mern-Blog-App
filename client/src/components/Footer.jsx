@@ -25,9 +25,7 @@ export default function Footerc() {
                     <div>
                         <Footer.Title title='About' />
                         <Footer.LinkGroup col>
-                            <Footer.Link href='https://www.100jsproject.com' target='_blank' rel='noopener noreferrer'>
-                                100 JS Project 
-                            </Footer.Link>
+                            
                             <Footer.Link href='/about' target='_blank' rel='noopener noreferrer'>
                                 Rohit Blog's
                             </Footer.Link>

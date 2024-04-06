@@ -18,10 +18,11 @@ export default function OAuth() {
         try {
             dispatch(signinStart())
             const resultFormGoogle=await signInWithPopup(auth,provider)
-            console.log(resultFormGoogle);
+            // console.log(resultFormGoogle);
             dispatch(asyncGooglesignin(resultFormGoogle))
         } catch (error) {
             dispatch(signinFailure(error.message))
+            console.log(error.message);
         }
     }
   return (
